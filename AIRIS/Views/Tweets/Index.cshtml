@@ -1,0 +1,62 @@
+﻿@model IEnumerable<AIRIS.Models.Tweet>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+<br />
+<p>
+    This is a simple message board created for the AIRIS programming test by Ashley Knowles. This demonstrates the use of an ASP.NET MVC 5 app which implements a bootstrap web layout
+    and an entity framework background which is used to store and retrieve the messages from an SQL database.
+</p>
+<br />
+
+@*Create the html elements for creating a post as well as calling the web API method*@
+
+<div class="well">
+    <form>
+        <div class="form-group">
+            @Html.ActionLink("Create Post", "Create")
+        </div>
+        <div class="form-group">
+            <a id="webapi" href="#">Call WebAPI method through ajax and jquery</a>
+            <br />
+        </div>
+    </form>
+</div>
+
+@*For every post that appears in the database, create an html element with a display picture, username and the contents of the post*@
+
+<div class="well tweets">
+    @foreach (var item in Model)
+    {
+        <div class="tweet">
+            <img src="https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg" width="64" height="64">
+            <div class="name">@Html.DisplayFor(modelItem => item.Name)</div>
+            <div class="content">@Html.DisplayFor(modelItem => item.Message)</div>
+            <div class="clearfix"></div>
+        </div>
+    }
+</div>
+
+@*Call the web api method and retrieve the data in a json format*@
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        var link = document.getElementById("webapi");
+
+        link.onclick = function () {
+            $.ajax({
+                type: "POST",
+                url: "/api/WebAPIMethod",
+                dataType: "json",
+                success: function (response) {
+                    window.alert(response);
+                }
+            });
+        }
+    });
+</script>
+
+<footer class="footer pull-right"></footer>
